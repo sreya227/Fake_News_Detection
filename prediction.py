@@ -8,8 +8,9 @@ print("You entered: " + str(var))
 # Function for making the prediction
 def detecting_fake_news(var):
     # Load the model and the vectorizer
-    load_model = pickle.load(open('final_model.sav', 'rb'))
-    vectorizer = pickle.load(open('vectorizer.sav', 'rb'))  # Adjust path if necessary
+    load_model = pickle.load(open('path_to_final_model/final_model.sav', 'rb'))
+    vectorizer = pickle.load(open('path_to_vectorizer/vectorizer.sav', 'rb'))
+  # Adjust path if necessary
 
     # Preprocess the input (vectorize it)
     var_vectorized = vectorizer.transform([var])
