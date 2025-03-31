@@ -1,34 +1,34 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Dec  4 17:45:40 2017
-
-@author: NishitP
-"""
-
 import pickle
-import os
+from sklearn.feature_extraction.text import TfidfVectorizer
 
+# Get user input
+var = input("Please enter the news text you want to verify: ")
+print("You entered:", var)
+
+# Function for making the prediction
 def detecting_fake_news(var):
-    """Function to predict whether news is fake or real"""
-    model_path = 'final_model.sav'  # Ensure the correct path
-    
-    if not os.path.exists(model_path):
-        print(f"Error: Model file '{model_path}' not found!")
-        return
-    
-    # Load the model
-    with open(model_path, 'rb') as file:
-        load_model = pickle.load(file)
-    
-    # Make predictions
-    prediction = load_model.predict([var])[0]
-    prob = load_model.predict_proba([var])[0][1]
-    
-    print("The given statement is:", prediction)
-    print("The truth probability score is:", prob)
+    # Correct file paths (adjust if needed)
+    model_path = r"C:\Users\sreya\Fake_News_Detection\final_model.sav"
+    vectorizer_path = r"C:\Users\sreya\Fake_News_Detection\vectorizer.sav"
 
+    # Load the model and vectorizer
+    with open(model_path, 'rb') as model_file:
+        load_model = pickle.load(model_file)
+
+    with open(vectorizer_path, 'rb') as vectorizer_file:
+        vectorizer = pickle.load(vectorizer_file)
+
+    # Preprocess the input (vectorize it)
+    var_vectorized = vectorizer.transform([var])
+
+    # Predict the class and probability
+    prediction = load_model.predict(var_vectorized)
+    prob = load_model.predict_proba(var_vectorized)
+
+    # Output the result
+    print("The given statement is:", prediction[0])
+    print("The truth probability score is:", prob[0][1])
+
+# Run the function
 if __name__ == '__main__':
-    var = input("Please enter the news text you want to verify: ")
-    print("You entered:", var)
     detecting_fake_news(var)
-
